@@ -8,6 +8,25 @@ Layer::Layer(int numInputs, int numOutputs)
     }
 }
 
+std::vector<std::shared_ptr<Value<double> > > Layer::parameters()
+{
+    std::vector<std::shared_ptr<Value<double> > > params;
+    for (auto n : m_neurons)
+    {
+        std::vector<std::shared_ptr<Value<double> > > neuronParams = n->parameters();
+        params.insert(params.end(), neuronParams.begin(), neuronParams.end());
+    }
+    return params;
+}
+
+void Layer::zeroGrad()
+{
+    for (auto n : m_neurons)
+    {
+        n->zeroGrad();
+    }
+}
+
 std::vector<std::shared_ptr<Value<double> > > Layer::forward(const std::vector<std::shared_ptr<Value<double> > >& inputs)
 {
     std::vector<std::shared_ptr<Value<double> > > outs;

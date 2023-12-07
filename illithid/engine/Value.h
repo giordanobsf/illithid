@@ -15,6 +15,9 @@ public:
         };
     }
 
+    T data() const { return m_data; }
+    double grad() const { return m_grad; }
+
     void backward()
     {
         std::vector<std::shared_ptr<Value<T> > > topo;
@@ -45,6 +48,16 @@ public:
         }
     }
 
+    void addDouble(double value)
+    {
+        m_data += value;
+    }
+
+    void zeroGrad()
+    {
+        m_grad = 0.0F;
+    }
+
     std::shared_ptr<Value<T> > pow(double power)
     {
         auto out = std::make_shared<Value<T> >(std::pow(this->m_data, power));
@@ -62,7 +75,18 @@ public:
         out->m_previous.push_back(this->shared_from_this());
 
         out->m_backward = [this, out]() { 
-            this->m_grad += (1 - std::pow(std::tanh(this->m_data), 2.0));
+            this->m_grad += (1 - std::pow(std::tanh(this->m_data), 2.0)) * out->m_grad;
+        };
+        return out;
+    }
+
+    std::shared_ptr<Value<T> > relu()
+    {
+        auto out = std::make_shared<Value<T> >(std::max(T(0.0F), this->m_data));
+        out->m_previous.push_back(this->shared_from_this());
+
+        out->m_backward = [this, out]() {
+            this->m_grad += (out->m_data > 0) ? out->m_grad : 0.0F;
         };
         return out;
     }
