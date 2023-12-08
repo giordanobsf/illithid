@@ -1,4 +1,5 @@
 #include "nn/MLP.h"
+#include "nn/MSELoss.h"
 
 int main(int argc, char** argv)
 {
@@ -16,19 +17,22 @@ int main(int argc, char** argv)
     double lr = 0.05;
     for (int k=0; k<numSteps; ++k)
     {
-        std::shared_ptr<Value<double> > loss = std::make_shared<Value<double> >(0.0F); 
+        MSELoss loss;
+        std::shared_ptr<Value<double> > output;
+        std::vector<std::shared_ptr<Value<double> > > ypreds;
         // Forward pass
         for (int i=0; i<xs.size(); ++i)
         {
             std::vector<std::shared_ptr<Value<double> > > ypred = n.forward(xs[i]);
-            loss = loss + ((ypred[0] - ys[i])->pow(2.0));
+            ypreds.push_back(ypred[0]);
         }
+        output = loss.forward(ys, ypreds);
 
         // Zero grad
         n.zeroGrad();
 
         // Backward pass
-        loss->backward();    
+        output->backward();    
 
         // Update (gradient descent)
         auto params = n.parameters();
@@ -36,7 +40,7 @@ int main(int argc, char** argv)
         {
             p->addDouble(-lr * p->grad());
         }
-        std::cout << k << " " << loss->data() << std::endl;
+        std::cout << k << " " << output->data() << std::endl;
     }
 
     return 0;
