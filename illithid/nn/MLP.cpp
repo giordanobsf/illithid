@@ -1,11 +1,13 @@
 #include "MLP.h"
+#include "Tanh.h"
+#include "ReLU.h"
 
 MLP::MLP(int numInputs, const std::vector<int>& numOutputs)
 {
     int inputs = numInputs;
     for (auto o : numOutputs)
     {
-        m_layers.push_back(std::make_shared<Layer>(inputs, o));
+        m_layers.push_back(std::make_shared<Layer<Tanh> >(inputs, o));
         inputs = o;
     }
 }

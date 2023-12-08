@@ -5,15 +5,11 @@
 
 class Neuron : public Module
 {
-private:
-    std::vector<std::shared_ptr<Value<double> > > m_weights;
-    std::shared_ptr<Value<double> > m_bias;
-
 public:
     Neuron(int numInputs);
     
     std::vector<std::shared_ptr<Value<double> > > parameters();
-    std::vector<std::shared_ptr<Value<double> > > forward(const std::vector<std::shared_ptr<Value<double> > >& inputs);
+    virtual std::vector<std::shared_ptr<Value<double> > > forward(const std::vector<std::shared_ptr<Value<double> > >& inputs);
 
     friend std::ostream& operator<<(std::ostream& out, const Neuron& v)
     {
@@ -25,4 +21,8 @@ public:
         out << "))";
         return out;
     }
+
+private:
+    std::vector<std::shared_ptr<Value<double> > > m_weights;
+    std::shared_ptr<Value<double> > m_bias;
 };

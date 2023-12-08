@@ -40,7 +40,5 @@ std::vector<std::shared_ptr<Value<double> > > Neuron::forward(const std::vector<
         activation = activation + (m_weights[i] * inputs[i]);
     }
     activation = activation + m_bias;
-    std::vector<std::shared_ptr<Value<double> > > out = {activation->tanh()};
-    // std::shared_ptr<Value<double> > out = activation->relu();
-    return out;
+    return std::vector<std::shared_ptr<Value<double> > >{ activation };
 }
