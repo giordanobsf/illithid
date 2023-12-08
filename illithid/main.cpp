@@ -1,6 +1,8 @@
 #include "nn/MLP.h"
 #include "nn/MSELoss.h"
 
+#include "plot/Plot.h"
+
 int main(int argc, char** argv)
 {
     MLP n(3, std::vector<int>{4, 4, 1}); //41 parameters
@@ -13,6 +15,7 @@ int main(int argc, char** argv)
 
     std::vector<std::shared_ptr<Value<double> > > ys = {std::make_shared<Value<double> >(1.0), std::make_shared<Value<double> >(-1.0), std::make_shared<Value<double> >(-1.0), std::make_shared<Value<double> >(1.0)}; 
 
+    std::vector<std::shared_ptr<Value<double> > > losses;
     int numSteps = 100;
     double lr = 0.05;
     for (int k=0; k<numSteps; ++k)
@@ -41,7 +44,11 @@ int main(int argc, char** argv)
             p->addDouble(-lr * p->grad());
         }
         std::cout << k << " " << output->data() << std::endl;
+        losses.push_back(output);
     }
 
+    Plot p;
+    p.Line(losses);
+    
     return 0;
 }
