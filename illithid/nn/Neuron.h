@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vector>
 #include "../engine/Value.h"
+#include "Module.h"
 
-class Neuron
+class Neuron : public Module
 {
 private:
     std::vector<std::shared_ptr<Value<double> > > m_weights;
@@ -13,8 +13,7 @@ public:
     Neuron(int numInputs);
     
     std::vector<std::shared_ptr<Value<double> > > parameters();
-    void zeroGrad();
-    std::shared_ptr<Value<double> > forward(const std::vector<std::shared_ptr<Value<double> > >& inputs);
+    std::vector<std::shared_ptr<Value<double> > > forward(const std::vector<std::shared_ptr<Value<double> > >& inputs);
 
     friend std::ostream& operator<<(std::ostream& out, const Neuron& v)
     {

@@ -27,16 +27,7 @@ std::vector<std::shared_ptr<Value<double> > > Neuron::parameters()
     return params;
 }
 
-void Neuron::zeroGrad()
-{
-    m_bias->zeroGrad();
-    for (auto w : m_weights)
-    {
-        w->zeroGrad();
-    }
-}
-
-std::shared_ptr<Value<double> > Neuron::forward(const std::vector<std::shared_ptr<Value<double> > >& inputs)
+std::vector<std::shared_ptr<Value<double> > > Neuron::forward(const std::vector<std::shared_ptr<Value<double> > >& inputs)
 {
     if(inputs.size() != m_weights.size())
     {
@@ -49,7 +40,7 @@ std::shared_ptr<Value<double> > Neuron::forward(const std::vector<std::shared_pt
         activation = activation + (m_weights[i] * inputs[i]);
     }
     activation = activation + m_bias;
-    std::shared_ptr<Value<double> > out = activation->tanh();
+    std::vector<std::shared_ptr<Value<double> > > out = {activation->tanh()};
     // std::shared_ptr<Value<double> > out = activation->relu();
     return out;
 }

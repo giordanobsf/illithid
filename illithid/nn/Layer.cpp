@@ -19,20 +19,13 @@ std::vector<std::shared_ptr<Value<double> > > Layer::parameters()
     return params;
 }
 
-void Layer::zeroGrad()
-{
-    for (auto n : m_neurons)
-    {
-        n->zeroGrad();
-    }
-}
-
 std::vector<std::shared_ptr<Value<double> > > Layer::forward(const std::vector<std::shared_ptr<Value<double> > >& inputs)
 {
     std::vector<std::shared_ptr<Value<double> > > outs;
     for(int i=0; i<m_neurons.size(); ++i)
     {
-        outs.push_back(m_neurons[i]->forward(inputs));
+        std::vector<std::shared_ptr<Value<double> > > output = m_neurons[i]->forward(inputs);
+        outs.insert(outs.end(), output.begin(), output.end());
     }
     return outs;
 }

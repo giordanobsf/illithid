@@ -2,7 +2,7 @@
 
 #include "Layer.h"
 
-class MLP
+class MLP : public Module
 {
 private:
     std::vector<std::shared_ptr<Layer> > m_layers;
@@ -11,7 +11,6 @@ public:
     MLP(int numInputs, const std::vector<int>& numOutputs);
 
     std::vector<std::shared_ptr<Value<double> > > parameters();
-    void zeroGrad();
 
     std::vector<std::shared_ptr<Value<double> > > forward(const std::vector<std::shared_ptr<Value<double> > >& inputs);
 

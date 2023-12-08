@@ -21,14 +21,6 @@ std::vector<std::shared_ptr<Value<double> > > MLP::parameters()
     return params;
 }
 
-void MLP::zeroGrad()
-{
-    for (auto l : m_layers)
-    {
-        l->zeroGrad();
-    }
-}
-
 std::vector<std::shared_ptr<Value<double> > > MLP::forward(const std::vector<std::shared_ptr<Value<double> > >& inputs)
 {
     std::vector<std::shared_ptr<Value<double> > > x = inputs;

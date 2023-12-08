@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 
     std::vector<std::shared_ptr<Value<double> > > ys = {std::make_shared<Value<double> >(1.0), std::make_shared<Value<double> >(-1.0), std::make_shared<Value<double> >(-1.0), std::make_shared<Value<double> >(1.0)}; 
 
-    int numSteps = 50;
+    int numSteps = 100;
     double lr = 0.05;
     for (int k=0; k<numSteps; ++k)
     {
