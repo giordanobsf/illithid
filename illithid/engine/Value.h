@@ -126,6 +126,16 @@ public:
         return out;
     }
 
+    friend bool operator==(const std::shared_ptr<Value<T> >& lhs, const std::shared_ptr<Value<T> >& rhs) 
+    { 
+        return lhs->m_data == rhs->m_data;
+    }
+    
+    friend bool operator!=(const std::shared_ptr<Value<T> >& lhs, const std::shared_ptr<Value<T> >& rhs) 
+    { 
+        return !(lhs == rhs); 
+    }
+
     friend std::ostream& operator<<(std::ostream& out, const Value<T>& v)
     {
         out << "Value(ptr=" << &v << ", data=" << v.m_data << ", grad=" << v.m_grad << ", children=";

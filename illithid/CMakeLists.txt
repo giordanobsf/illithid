@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(nn)
 add_subdirectory(plot)
+add_subdirectory(metrics)
 
 add_executable(illithid main.cpp)
-target_link_libraries(illithid PRIVATE nn plot)
+target_link_libraries(illithid PRIVATE nn plot metrics)

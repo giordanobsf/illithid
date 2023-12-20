@@ -3,6 +3,8 @@
 
 #include "plot/Plot.h"
 
+#include "metrics/BinaryF1Score.h"
+
 int main(int argc, char** argv)
 {
     MLP n(3, std::vector<int>{4, 4, 1}); //41 parameters
@@ -29,7 +31,7 @@ int main(int argc, char** argv)
             std::vector<std::shared_ptr<Value<double> > > ypred = n.forward(xs[i]);
             ypreds.push_back(ypred[0]);
         }
-        output = loss.forward(ys, ypreds);
+        output = loss.forward(ypreds, ys);
 
         // Zero grad
         n.zeroGrad();
@@ -43,7 +45,11 @@ int main(int argc, char** argv)
         {
             p->addDouble(-lr * p->grad());
         }
-        std::cout << k << " " << output->data() << std::endl;
+
+        // Calculate metrics
+        BinaryF1Score f1(ypreds, ys, 0.0);
+
+        std::cout << k << " Loss: " << output->data() << " F1: " << f1.value()->data() << std::endl;
         losses.push_back(output);
     }
 
